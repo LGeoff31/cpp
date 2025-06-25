@@ -11,6 +11,7 @@ Note, iostreams must be passed by reference & for operation>> and operation<<
 Friend keyword: Gives access to the private/protected fields of another class
 When we use friend in .H, we don't have to prefix that function with Rational::, it will already have access
 
+Important that for =, <<, >>, we always return by reference because we want to support chaining (a=(b=c))
 */
 
 Rational::Rational(int num, int denom) : num{num}, denom{denom} {}
@@ -67,6 +68,7 @@ ostream &operator<<(ostream &out, const Rational &r)
 
 int main()
 {
+    5 << cout;
     Rational a{3, 4}, b{2, 5};
     Rational c = a + b;
     cout << c << endl;
