@@ -22,6 +22,8 @@ move takes a value and FORCES it to a rvalue, that way we don't use copy constru
 */
 
 struct Node
+// this is a pointer to the current object
+// *this is the object itself
 {
     string data;
     Node *next;
@@ -31,6 +33,23 @@ struct Node
     Node(const Node &other) : data{other.data}, next{other.next ? new Node{*(other.next)} : nullptr} {}
     // Move that takes in rvalue reference
     Node(Node &&other) : data{move(other.data)}, next{other.next} { other.next = nullptr; }
+    // Copy assignment operator
+    Node &operator=(const Node &other)
+    {
+        Node temp{other};
+        swap(data, temp.data);
+        swap(next, temp.next);
+        return *this;
+        // When temp goes out of scope, its dtor is run so cleaned up :)
+    }
+
+    // Move assignment operator
+    Node &operator=(Node &&other)
+    {
+        swap(data, other.data);
+        swap(next, other.next);
+        return *this;
+    }
     // Delete constructor
     ~Node()
     {
@@ -65,14 +84,16 @@ void f(const string &&s)
 int main()
 {
     Node n{"a", new Node{"b", new Node{"c", nullptr}}};
-    Node p{n}; // Calls the copy constructor (shallow)
-    p.next->data = "z";
+    Node p{"d", new Node{"e", new Node{"f", nullptr}}};
+    n = n;
+    // Node p{n}; // Calls the copy constructor (shallow)
+    // p.next->data = "z";
     // printLinkedList(&p);
-    // printLinkedList(&n);
+    printLinkedList(&n);
 
     // Inefficiency since getAlphabet stack frame creates the llist, then to get to caller stack frame calls copy construct (INEFFICIENT)
     // We know temporary list made in getAlphabet() will be destroyed, we could've just used it
-    Node a = getAlphabet();
+    // Node a = getAlphabet();
 
     // int x = 5;
     // int &y = x;
@@ -83,8 +104,8 @@ int main()
 
     // string &&rvalue = f(); // Extending the lifetime of an rvalue
     // cout << rvalue << endl;
-    string s = "Hello world";
-    f(s);
+    // string s = "Hello world";
+    // f(s);
 
     return 0;
 }
