@@ -24,6 +24,12 @@ To remove duplicated code, we use a template
 To modularize Iterator and CIterator, we will have return type of template parameter
 
 <typename T> is a template declaration, T is placeholder for any type
+
+Note, a template should appear in the .h file.
+If all your template implemention is in .cc file, which are compiled seperately, then linked.
+When compiling .cc, we know code for class but not types.
+Will know type within template but not overall class
+Causes linking error
 */
 
 class List
@@ -57,24 +63,6 @@ class List
     };
     using Iterator = MyIterator<string &>;
     using CIterator = MyIterator<const string &>;
-
-    // Outside the Iterator class, we need to support .begin() and .end() methods
-    Iterator begin()
-    {
-        return Iterator{head};
-    }
-    Iterator end()
-    {
-        return Iterator{nullptr};
-    }
-    CIterator begin() const
-    {
-        return Iterator{head};
-    }
-    CIterator end() const
-    {
-        return Iterator{nullptr};
-    }
 };
 
 int main()
