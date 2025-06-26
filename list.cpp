@@ -17,7 +17,12 @@ We need to operator overload the following for Iterator pattern
 2) *
 3) !=
 
-for (string s: word) // This implicitly uses the Iterator
+for (string s: l) // This implicitly uses the Iterator
+equivalent to
+for (Iterator it = l.begin(), it != l.end(); it++) {
+    string s = *it;
+}
+
 Note, the auto keyword allows the type to be implicitly determined by fcn return type, sort of how Python does it
 We want to hide the details, not allow clients to create Iterator
 We make Iterator ctor private, and friend List so List has access

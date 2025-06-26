@@ -19,6 +19,16 @@ const allows temporary memory location to store argument
 a = move(b) moves all data from b to a in O(1)
 move is included in include <utility>
 move takes a value and FORCES it to a rvalue, that way we don't use copy constructor O(1)
+
+Copy/move elision
+C++ optimization that eliminates unnecessary copy/move of objects
+Constructs object directly from final location
+
+Tampering
+n.next = &n; // create self loop
+crashes when goes out of scope and dtor is run since referential cycle
+
+This is called representation exposure since the next pointer is exposed publicly
 */
 
 struct Node
