@@ -35,6 +35,6 @@ public:
 
 int main()
 {
-    RedTurtle *t = new RedTurtle;
-    t->drawShell();
+    Turtle *t = new RedTurtle;
+    t->draw();
 }
